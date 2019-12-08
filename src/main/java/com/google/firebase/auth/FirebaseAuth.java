@@ -359,14 +359,14 @@ public class FirebaseAuth {
    * <p>This method does not check whether a token has been revoked. Use
    * {@link #verifyIdToken(String, boolean)} to perform an additional revocation check.
    *
-   * @param token A Firebase ID token string to parse and verify.
+   * @param idToken A Firebase ID token string to parse and verify.
    * @return A {@link FirebaseToken} representing the verified and decoded token.
    * @throws IllegalArgumentException If the token is null, empty, or if the {@link FirebaseApp}
    *     instance does not have a project ID associated with it.
    * @throws FirebaseAuthException If an error occurs while parsing or validating the token.
    */
-  public FirebaseToken verifyIdToken(@NonNull String token) throws FirebaseAuthException {
-    return verifyIdToken(token, false);
+  public FirebaseToken verifyIdToken(@NonNull String idToken) throws FirebaseAuthException {
+    return verifyIdToken(idToken, false);
   }
 
   /**
@@ -383,7 +383,7 @@ public class FirebaseAuth {
    * if the ID token has been revoked since it was issues. This requires making an additional
    * remote API call.
    *
-   * @param token A Firebase ID token string to parse and verify.
+   * @param idToken A Firebase ID token string to parse and verify.
    * @param checkRevoked A boolean denoting whether to check if the tokens were revoked.
    * @return A {@link FirebaseToken} representing the verified and decoded token.
    * @throws IllegalArgumentException If the token is null, empty, or if the {@link FirebaseApp}
@@ -391,41 +391,41 @@ public class FirebaseAuth {
    * @throws FirebaseAuthException If an error occurs while parsing or validating the token.
    */
   public FirebaseToken verifyIdToken(
-      @NonNull String token, boolean checkRevoked) throws FirebaseAuthException {
-    return verifyIdTokenOp(token, checkRevoked).call();
+      @NonNull String idToken, boolean checkRevoked) throws FirebaseAuthException {
+    return verifyIdTokenOp(idToken, checkRevoked).call();
   }
 
   /**
    * Similar to {@link #verifyIdToken(String)} but performs the operation asynchronously.
    *
-   * @param token A Firebase ID Token to verify and parse.
+   * @param idToken A Firebase ID Token to verify and parse.
    * @return An {@code ApiFuture} which will complete successfully with the parsed token, or
    *     unsuccessfully with a {@link FirebaseAuthException}.
    * @throws IllegalArgumentException If the token is null, empty, or if the {@link FirebaseApp}
    *     instance does not have a project ID associated with it.
    */
-  public ApiFuture<FirebaseToken> verifyIdTokenAsync(@NonNull String token) {
-    return verifyIdTokenAsync(token, false);
+  public ApiFuture<FirebaseToken> verifyIdTokenAsync(@NonNull String idToken) {
+    return verifyIdTokenAsync(idToken, false);
   }
 
   /**
    * Similar to {@link #verifyIdToken(String, boolean)} but performs the operation asynchronously.
    *
-   * @param token A Firebase ID Token to verify and parse.
+   * @param idToken A Firebase ID Token to verify and parse.
    * @param checkRevoked A boolean denoting whether to check if the tokens were revoked.
    * @return An {@code ApiFuture} which will complete successfully with the parsed token, or
    *     unsuccessfully with a {@link FirebaseAuthException}.
    * @throws IllegalArgumentException If the token is null, empty, or if the {@link FirebaseApp}
    *     instance does not have a project ID associated with it.
    */
-  public ApiFuture<FirebaseToken> verifyIdTokenAsync(@NonNull String token, boolean checkRevoked) {
+  public ApiFuture<FirebaseToken> verifyIdTokenAsync(@NonNull String idToken, boolean checkRevoked) {
     return verifyIdTokenOp(token, checkRevoked).callAsync(firebaseApp);
   }
 
   private CallableOperation<FirebaseToken, FirebaseAuthException> verifyIdTokenOp(
-      final String token, final boolean checkRevoked) {
+      final String idToken, final boolean checkRevoked) {
     checkNotDestroyed();
-    checkArgument(!Strings.isNullOrEmpty(token), "ID token must not be null or empty");
+    checkArgument(!Strings.isNullOrEmpty(idToken), "ID token must not be null or empty");
     final FirebaseTokenVerifier verifier = getIdTokenVerifier(checkRevoked);
     return new CallableOperation<FirebaseToken, FirebaseAuthException>() {
       @Override
